@@ -3,6 +3,8 @@ import HomeContainer from "../components/containers/HomeContainer";
 
 export default function Home() {
   return (
-    <HomeContainer/>
+    <div className="h-full bg-gray-500">
+      <HomeContainer />
+    </div>
   );
 }
