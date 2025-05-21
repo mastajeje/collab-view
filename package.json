@@ -8,12 +8,14 @@
     "dev:client": "pnpm --filter client dev",
     "dev:server": "pnpm --filter signaling-server start",
     "dev": "concurrently \"pnpm dev:client\" \"pnpm dev:server\"",
-    "test": "echo \"Error: no test specified\" && exit 1"  },
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "turbo": "^2.5.3"
   }
 }

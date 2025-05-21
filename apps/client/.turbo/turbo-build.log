@@ -1,0 +1,25 @@
+
+
+> client@0.1.0 build /Users/zinnotechmac/Desktop/projects/collab-view/apps/client
+> next build
+
+   [1m[38;2;173;127;168m▲ Next.js 15.3.2[39m[22m
+
+ [37m[1m [22m[39m Creating an optimized production build ...
+ [32m[1m✓[22m[39m Compiled successfully in 2000ms
+[?25l [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39m[2K[1G[?25h[31m
+Failed to compile.[39m
+[?25l [36m.[39m [2K[1G[?25h
+./app/(home)/page.tsx
+1:8  Error: 'Image' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/components/organisms/EnterRoomView.tsx
+2:8  Error: 'Button' is defined but never used.  @typescript-eslint/no-unused-vars
+3:8  Error: 'Input' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/room/page.tsx
+13:28  Error: 'roomId' is defined but never used.  @typescript-eslint/no-unused-vars
+13:36  Error: 'nickname' is defined but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+[?25l [36m.[39m [?25h[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 1.[39m

@@ -1,5 +1,14 @@
-import EnterRoomWindow from "../organisms/EnterRoomWindow";
+"use client";
+
+import { useRouter } from "next/navigation";
+import EnterRoomView from "../organisms/EnterRoomView";
 
 export default function HomeContainer() {
-    return (<EnterRoomWindow/>)
+  const router = useRouter();
+
+  const handleEnter = () => {
+    router.push("/room");
+  };
+
+  return <EnterRoomView onEnter={handleEnter} />;
 }
