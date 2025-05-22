@@ -1,12 +1,18 @@
-import socket from "../index";
+import { Socket } from "socket.io-client";
+// import { socket } from "../index";
 
-export const emitJoinRoom = (roomId: string, userName: string) => {
+export const emitJoinRoom = (
+  socket: Socket,
+  roomId: string,
+  userName: string,
+) => {
   console.log(socket);
   console.log(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL);
   socket.emit("join", { roomId, userName });
 };
 
 export const onUserJoined = (
+  socket: Socket,
   callback: (data: { id: string; userName: string }) => void,
 ) => {
   socket.on("user-joined", callback);
@@ -18,6 +24,6 @@ export const onUserJoined = (
 //   socket.on("user-left", callback);
 // };
 
-export const offUserJoined = () => {
-  socket.off("user-joined");
-};
+// export const offUserJoined = () => {
+//   socket.off("user-joined");
+// };

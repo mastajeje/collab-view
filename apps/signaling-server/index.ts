@@ -17,9 +17,15 @@ io.on('connection', (socket) => {
 
   socket.on('join', ({roomId, userName}) => {
     socket.join(roomId);
-    // socket.to(roomId).emit('user-joined', {id: socket.id, userName});
-    io.emit('user-joined', {id: socket.id, userName});
+    io.in(roomId).emit('user-joined', {id: socket.id, userName});
+    // io.emit('user-joined', {id: socket.id, userName});
     console.log(`User ${userName} joined room ${roomId}`);
+  });
+
+  socket.on('test', (data) => {
+    console.log('Received test event:', data);
+    console.log('Socket IDs:', socket.id);
+    console.log('Event data:', JSON.stringify(data, null, 2));
   });
 
   socket.on('disconnect', () => {

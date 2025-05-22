@@ -1,9 +1,15 @@
-// {
-//     "compilerOptions": {
-//         "target": "ES2017",
-//         "lib": ["dom", "dom.iterable", "esnext"],
-//         "allowJs": true,
-//         "skipLibCheck": true,
-//         "strict": true,
-//     }
-// }
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["packages/shared/src/*"]
+    },
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}

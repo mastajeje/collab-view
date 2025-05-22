@@ -1,37 +1,44 @@
-"use client";
+// "use client";
 
-import { useEffect } from "react";
-import { connectSocket } from "../lib/socket";
-import { log } from "comm-utils";
-import {
-  emitJoinRoom,
-  offUserJoined,
-  onUserJoined,
-} from "@/sockets/events/room";
-import socket from "@/sockets";
+// import { useEffect } from "react";
+// import { log } from "comm-utils";
+// // import { socket } from "@/sockets";
+// import { useSocketStore } from "../stores/socketStore";
+// import { JOIN } from "@shared/dist";
+// // import {socket} from "@/sockets";
 
-export default function RoomPage() {
-  useEffect(() => {
-    if (!socket) return;
-    // const socket = connectSocket();
-    const roomId = "123";
-    const userName = "JJ";
-    console.log(socket.connected);
-    socket.on("connect", () => {
-      emitJoinRoom(roomId, userName);
+// export default function RoomPage() {
+//   const { socket, connect, isConnected, onEvents } = useSocketStore();
 
-      onUserJoined((data) => {
-        console.log(data);
-      });
-    });
+//   useEffect(() => {
+//     connect();
+//     // };
+//   }, []);
 
-    return () => {
-      offUserJoined();
-    };
-  }, [socket]);
-  return (
-    <div>
-      <div>Room</div>
-    </div>
-  );
+//   useEffect(() => {
+//     if (isConnected && socket) {
+//       onEvents();
+//       socket.emit(JOIN, { roomId: "123", userName: "test" });
+//     }
+//   }, [isConnected]);
+
+//   const handleTest = () => {
+//     if (socket) {
+//       socket.emit("test", { text: "test text" }, (response) => {
+//         console.log("Test event response:", response);
+//       });
+//     } else {
+//       console.log("Socket is null");
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <div>Room</div>
+//       <button onClick={handleTest}>test</button>
+//     </div>
+//   );
+// }
+export default function Page() {
+  return <div>RoomPage</div>;
 }

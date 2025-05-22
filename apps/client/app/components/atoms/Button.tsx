@@ -1,14 +1,18 @@
 export default function Button({
   text,
   onClick,
+  size = "full",
 }: {
   text: string;
-  onClick: () => void;
+  onClick?: () => void;
+  size?: "auto" | "full";
 }) {
   return (
     <button
       onClick={onClick}
-      className="h-[43px] w-full min-w-[250px] cursor-pointer rounded-md bg-blue-500 px-2 text-lg text-white"
+      className={`h-[43px] cursor-pointer rounded-md bg-blue-500 px-3 py-1 text-lg text-white ${
+        size === "auto" ? "w-auto" : "w-full"
+      }`}
     >
       {text}
     </button>
