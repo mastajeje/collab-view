@@ -1,4 +1,4 @@
-import Button from "@/app/components/atoms/Button";
+import Button from "@/components/atoms/Button";
 
 export default function TopBar({ roomId }: { roomId: string }) {
   return (

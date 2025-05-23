@@ -1,5 +1,5 @@
 import Image from "next/image";
-import HomeContainer from "../components/containers/HomeContainer";
+import HomeContainer from "./containers/HomeContainer";
 
 export default function Home() {
   return (

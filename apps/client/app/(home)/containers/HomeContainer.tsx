@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import EnterRoomView from "../organisms/EnterRoomView";
+import EnterRoomView from "../../../components/organisms/EnterRoomView";
 import { generateRoomId } from "@/app/lib/room";
 
 export default function HomeContainer() {

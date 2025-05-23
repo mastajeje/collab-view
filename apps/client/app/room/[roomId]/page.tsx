@@ -1,16 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { log } from "comm-utils";
-// import { socket } from "@/sockets";
 import { JOIN } from "@shared/dist";
 import { useParams, useSearchParams } from "next/navigation";
-import { useSocketStore } from "@/app/stores/socketStore";
 import TopBar from "../components/TopBar";
-import IconButton from "@/app/components/atoms/IconButton";
-import EmptyScreen from "@/app/components/organisms/EmptyScreen";
-// import {socket} from "@/sockets";
-
+import ViewerContainer from "../containers/ViewerContainer";
+import { useSocketStore } from "@/stores/socketStore";
 type Props = {
   mode: "empty" | "video" | "image";
 };
@@ -45,7 +40,8 @@ export default function RoomPage({ mode }: Props) {
   return (
     <main className="flex h-full w-full flex-col">
       <TopBar roomId={roomId} />
-      {mode === "empty" && <EmptyScreen onClick={handleTest} />}
+      {/* {mode === "empty" && <EmptyScreen onClick={handleTest} />} */}
+      <ViewerContainer />
     </main>
   );
 }
