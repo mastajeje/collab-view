@@ -17,6 +17,9 @@ importers:
 
   apps/client:
     dependencies:
+      '@shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       comm-utils:
         specifier: workspace:*
         version: link:../../packages/comm-utils
@@ -72,6 +75,9 @@ importers:
 
   apps/signaling-server:
     dependencies:
+      '@shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@types/express':
         specifier: ^5.0.2
         version: 5.0.2

@@ -1,3 +1,4 @@
+import {JOIN} from '@shared/dist';
 import express from 'express';
 import http from 'http';
 import {Server} from 'socket.io';
@@ -15,7 +16,7 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
   console.log('New client connected:', socket.id);
 
-  socket.on('join', ({roomId, userName}) => {
+  socket.on(JOIN, ({roomId, userName}) => {
     socket.join(roomId);
     io.in(roomId).emit('user-joined', {id: socket.id, userName});
     // io.emit('user-joined', {id: socket.id, userName});
