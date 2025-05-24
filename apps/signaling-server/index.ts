@@ -1,4 +1,4 @@
-import {JOIN} from '@shared/dist';
+import {JOIN, USER_JOINED} from '@shared/dist';
 import express from 'express';
 import http from 'http';
 import {Server} from 'socket.io';
@@ -18,15 +18,20 @@ io.on('connection', (socket) => {
 
   socket.on(JOIN, ({roomId, userName}) => {
     socket.join(roomId);
-    io.in(roomId).emit('user-joined', {id: socket.id, userName});
+
+    io.in(roomId).emit(USER_JOINED, {id: socket.id, userName});
     // io.emit('user-joined', {id: socket.id, userName});
     console.log(`User ${userName} joined room ${roomId}`);
   });
 
-  socket.on('test', (data) => {
-    console.log('Received test event:', data);
-    console.log('Socket IDs:', socket.id);
-    console.log('Event data:', JSON.stringify(data, null, 2));
+  //   socket.on('test', (data) => {
+  //     console.log('Received test event:', data);
+  //     console.log('Socket IDs:', socket.id);
+  //     console.log('Event data:', JSON.stringify(data, null, 2));
+  //   });
+
+  socket.on('send-image', ({image}) => {
+    socket.broadcast.emit('receive-image', image);
   });
 
   socket.on('disconnect', () => {

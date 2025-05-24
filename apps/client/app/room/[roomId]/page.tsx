@@ -16,32 +16,31 @@ export default function RoomPage({ mode }: Props) {
   const { roomId } = useParams<{ roomId: string }>();
   const username = searchParams.get("username");
 
-  useEffect(() => {
-    console.log(roomId, username, "sss");
-    connect();
-    // };
-  }, []);
+  //   useEffect(() => {
+  //     connect();
+  //     // };
+  //   }, []);
 
-  useEffect(() => {
-    if (isConnected && socket) {
-      onEvents();
-      socket.emit(JOIN, { roomId: "123", userName: "test" });
-    }
-  }, [isConnected]);
+  //   useEffect(() => {
+  //     if (isConnected && socket) {
+  //       onEvents();
+  //       socket.emit(JOIN, { roomId: "123", userName: "test" });
+  //     }
+  //   }, [isConnected]);
 
-  const handleTest = () => {
-    if (socket) {
-      socket.emit("test", { text: "test text" });
-    } else {
-      console.log("Socket is null");
-    }
-  };
+  //   const handleTest = () => {
+  //     if (socket) {
+  //       socket.emit("test", { text: "test text" });
+  //     } else {
+  //       console.log("Socket is null");
+  //     }
+  //   };
 
   return (
     <main className="flex h-full w-full flex-col">
       <TopBar roomId={roomId} />
       {/* {mode === "empty" && <EmptyScreen onClick={handleTest} />} */}
-      <ViewerContainer />
+      <ViewerContainer roomId={roomId} username={username} />
     </main>
   );
 }

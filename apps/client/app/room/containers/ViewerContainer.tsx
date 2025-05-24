@@ -2,13 +2,53 @@
 
 import ViewModeButtons from "@/components/molecules/ViewModeButtons";
 import ViewerSwitcher from "../components/ViewerSwitcher";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { sendImage } from "@/sockets/events/image";
+import { useSocketStore } from "@/stores/socketStore";
+import { joinRoom } from "@/sockets/events/room";
 
-export default function CollaborationContainer() {
+export default function CollaborationContainer({
+  roomId,
+  username,
+}: {
+  roomId: string;
+  username: string | null;
+}) {
+  const { socket, initImageListener, connect, isConnected, onEvents } =
+    useSocketStore();
   const [mode, setMode] = useState<"empty" | "video" | "image">("empty");
+  const [imageUrl, setImageUrl] = useState<string>("");
+
+  useEffect(() => {
+    connect();
+  }, []);
+
+  useEffect(() => {
+    if (isConnected && socket && username) {
+      onEvents();
+      joinRoom(roomId, username);
+      initImageListener((image) => {
+        setMode("image");
+        console.log("image", image);
+        setImageUrl(image);
+      });
+    }
+  }, [isConnected]);
 
   const handleModeChange = (mode: "empty" | "video" | "image") => {
     setMode(mode);
+  };
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      sendImage(base64);
+      setMode("image");
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -16,8 +56,11 @@ export default function CollaborationContainer() {
       aria-label="Viewer Container"
       className="relative flex h-full w-full flex-col items-center justify-center bg-gray-100"
     >
-      <ViewModeButtons onModeChange={handleModeChange} />
-      <ViewerSwitcher mode={mode} />
+      <ViewModeButtons
+        onModeChange={handleModeChange}
+        onUpload={handleUpload}
+      />
+      <ViewerSwitcher mode={mode} imageUrl={imageUrl} />
     </div>
   );
 }

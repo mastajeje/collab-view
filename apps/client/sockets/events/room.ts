@@ -1,29 +1,11 @@
+import { SEND_IMAGE } from "@shared/constants/socket-events";
+import { JOIN } from "@shared/dist";
 import { Socket } from "socket.io-client";
-// import { socket } from "../index";
 
-export const emitJoinRoom = (
-  socket: Socket,
-  roomId: string,
-  userName: string,
-) => {
-  console.log(socket);
-  console.log(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL);
-  socket.emit("join", { roomId, userName });
+export const joinRoom = (socket: Socket, roomId: string, userName: string) => {
+  socket.emit(JOIN, { roomId, userName });
 };
 
-export const onUserJoined = (
-  socket: Socket,
-  callback: (data: { id: string; userName: string }) => void,
-) => {
-  socket.on("user-joined", callback);
+export const sendImage = (socket: Socket, image: Base64URLString) => {
+  socket.emit(SEND_IMAGE, { image });
 };
-
-// export const onUserLeft = (
-//   callback: (data: { id: string; userName: string }) => void,
-// ) => {
-//   socket.on("user-left", callback);
-// };
-
-// export const offUserJoined = () => {
-//   socket.off("user-joined");
-// };

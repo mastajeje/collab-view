@@ -2,6 +2,7 @@ import { log } from "comm-utils";
 import { io, Socket } from "socket.io-client";
 import { create } from "zustand";
 import { CONNECT } from "@shared/constants/socket-events";
+import { JOIN, USER_JOINED } from "@shared/dist";
 const SOCKET_URL = "http://localhost:8080";
 
 interface SocketStore {
@@ -9,10 +10,12 @@ interface SocketStore {
   isConnected: boolean;
   nickname: string;
   roomId: string;
+  image: string;
 
   connect: () => void;
   disconnect: () => void;
   onEvents: () => void;
+  initImageListener: (callback: (image: string) => void) => void;
 }
 
 export const useSocketStore = create<SocketStore>((set, get) => ({
@@ -20,7 +23,7 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
   isConnected: false,
   nickname: "",
   roomId: "",
-
+  image: "",
   connect: () => {
     if (get().socket) return;
 
@@ -49,16 +52,26 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
     }
   },
 
+  // 이미지 수신 이벤트 리스너 추가
+  initImageListener: (callback) => {
+    const socket = get().socket;
+    if (!socket) return;
+
+    socket.on("receive-image", (image: string) => {
+      callback(image);
+    });
+  },
+
   onEvents: () => {
     const socket = get().socket;
     if (!socket) return;
 
-    socket.on("join", (data) => {
+    socket.on(JOIN, (data) => {
       log("방 참가 완료", data);
       set({ roomId: data.roomId });
     });
 
-    socket.on("user-joined", (data) => {
+    socket.on(USER_JOINED, (data) => {
       log("다른 유저가 입장", data);
     });
 

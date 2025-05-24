@@ -9,13 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@shared": "workspace:*",
     "comm-utils": "workspace:*",
+    "fabric": "^6.6.5",
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "socket.io-client": "^4.8.1",
-    "zustand": "^5.0.5",
-    "@shared": "workspace:*"
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
