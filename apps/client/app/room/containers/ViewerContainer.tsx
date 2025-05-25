@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { sendImage } from "@/sockets/events/image";
 import { useSocketStore } from "@/stores/socketStore";
 import { joinRoom } from "@/sockets/events/room";
+import { ChatWindow } from "@/components/organisms/ChatWindow";
 
 export default function CollaborationContainer({
   roomId,
@@ -25,11 +26,10 @@ export default function CollaborationContainer({
 
   useEffect(() => {
     if (isConnected && socket && username) {
+      joinRoom(socket, roomId, username);
       onEvents();
-      joinRoom(roomId, username);
       initImageListener((image) => {
         setMode("image");
-        console.log("image", image);
         setImageUrl(image);
       });
     }
@@ -61,6 +61,7 @@ export default function CollaborationContainer({
         onUpload={handleUpload}
       />
       <ViewerSwitcher mode={mode} imageUrl={imageUrl} />
+      <ChatWindow />
     </div>
   );
 }

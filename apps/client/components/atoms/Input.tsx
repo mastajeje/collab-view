@@ -1,11 +1,15 @@
-export default function Input({ placeholder }: { placeholder: string }) {
+export default function Input({
+  placeholder,
+  border = "border-1 border-gray-200 rounded-md",
+}: {
+  placeholder: string;
+  border?: string;
+}) {
   return (
-    <div>
-      <input
-        className="h-[43px] w-auto min-w-[250px] rounded-md border-1 border-gray-200 p-[2px]"
-        type="text"
-        placeholder={placeholder}
-      />
-    </div>
+    <input
+      className={`h-[43px] w-auto min-w-[250px] rounded-md border-1 border-gray-200 p-[2px] ${border}`}
+      type="text"
+      placeholder={placeholder}
+    />
   );
 }

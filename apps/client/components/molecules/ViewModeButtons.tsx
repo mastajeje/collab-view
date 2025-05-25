@@ -15,7 +15,7 @@ export default function ViewModeButtons({ onModeChange, onUpload }: Props) {
     >
       {/* <IconButton icon="I" onClick={() => onModeChange("image")} /> */}
       <UploadButton onUpload={onUpload} />
-      <IconButton icon="V" onClick={() => onModeChange("video")} />
+      <IconButton icon="/next.svg" onClick={() => onModeChange("video")} />
     </div>
   );
 }

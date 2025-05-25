@@ -5,7 +5,7 @@ export default function Button({
 }: {
   text: string;
   onClick?: () => void;
-  size?: "auto" | "full";
+  size?: "sm" | "md" | "lg" | "auto" | "full";
 }) {
   return (
     <button
