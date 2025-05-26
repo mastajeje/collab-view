@@ -1,17 +1,20 @@
 import { log } from "comm-utils";
 import { io, Socket } from "socket.io-client";
 import { create } from "zustand";
-import { CONNECT } from "@shared/constants/socket-events";
+import { CONNECT, RECEIVE_IMAGE } from "@shared/constants/socket-events";
 import { JOIN, USER_JOINED } from "@shared/dist";
 const SOCKET_URL = "http://localhost:8080";
 
 interface SocketStore {
+  //   State
   socket: Socket | null;
   isConnected: boolean;
-  nickname: string;
+  username: string;
   roomId: string;
   image: string;
 
+  //   Actions
+  setRoomInfo: (roomId: string, username: string) => void;
   connect: () => void;
   disconnect: () => void;
   onEvents: () => void;
@@ -21,9 +24,14 @@ interface SocketStore {
 export const useSocketStore = create<SocketStore>((set, get) => ({
   socket: null,
   isConnected: false,
-  nickname: "",
+  username: "",
   roomId: "",
   image: "",
+
+  setRoomInfo: (roomId: string, username: string) => {
+    set({ roomId, username });
+  },
+
   connect: () => {
     if (get().socket) return;
 
@@ -57,7 +65,7 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
     const socket = get().socket;
     if (!socket) return;
 
-    socket.on("receive-image", (image: string) => {
+    socket.on(RECEIVE_IMAGE, (image: string) => {
       callback(image);
     });
   },

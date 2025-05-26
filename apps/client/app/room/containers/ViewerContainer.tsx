@@ -15,8 +15,14 @@ export default function CollaborationContainer({
   roomId: string;
   username: string | null;
 }) {
-  const { socket, initImageListener, connect, isConnected, onEvents } =
-    useSocketStore();
+  const {
+    socket,
+    setRoomInfo,
+    initImageListener,
+    connect,
+    isConnected,
+    onEvents,
+  } = useSocketStore();
   const [mode, setMode] = useState<"empty" | "video" | "image">("empty");
   const [imageUrl, setImageUrl] = useState<string>("");
 
@@ -27,6 +33,7 @@ export default function CollaborationContainer({
   useEffect(() => {
     if (isConnected && socket && username) {
       joinRoom(socket, roomId, username);
+      setRoomInfo(roomId, username);
       onEvents();
       initImageListener((image) => {
         setMode("image");

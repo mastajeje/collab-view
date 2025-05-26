@@ -34,6 +34,10 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('receive-image', image);
   });
 
+  socket.on('send-message', ({message, sender}) => {
+    socket.broadcast.emit('receive-message', {message, sender});
+  });
+
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id);
   });
