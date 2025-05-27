@@ -5,8 +5,13 @@ import { use, useEffect, useState } from "react";
 import { useSocketStore } from "@/stores/socketStore";
 import { sendMessage } from "@/sockets/events/chat";
 import { RECEIVE_MESSAGE } from "@shared/constants/socket-events";
+import { ChatTop } from "../molecules/ChatTop";
 
-export const ChatWindow = () => {
+export const ChatWindow = ({
+  handleChatOpen,
+}: {
+  handleChatOpen: () => void;
+}) => {
   const [message, setMessage] = useState("");
   const messages = useChatStore((state) => state.messages);
   const addMessage = useChatStore((state) => state.addMessage);
@@ -52,9 +57,10 @@ export const ChatWindow = () => {
   return (
     <div
       aria-label="chat-window"
-      className="absolute right-0 flex h-full flex-col justify-between bg-white"
+      className="absolute right-0 flex h-full max-w-[325px] flex-col justify-between bg-white"
     >
-      <div className="flex flex-col gap-3.5 px-4 py-2.5">
+      <ChatTop handleChatOpen={handleChatOpen} />
+      <div className="mb-auto flex cursor-pointer flex-col gap-3.5 overflow-y-auto px-4 py-2.5">
         {messages.map(({ id, sender, content }) => (
           <ChatBox
             key={id}

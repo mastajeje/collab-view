@@ -14,7 +14,7 @@ export const UploadButton = ({
       />
       <label
         htmlFor="upload"
-        className="flex h-[43px] w-[43px] cursor-pointer items-center justify-center rounded-xl bg-white p-2 text-3xl"
+        className="flex h-[43px] w-[43px] cursor-pointer items-center justify-center rounded-xl bg-gray-200 bg-white p-2 text-3xl"
       >
         +
       </label>

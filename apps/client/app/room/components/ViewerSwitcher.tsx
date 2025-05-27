@@ -5,13 +5,9 @@ import VideoChatViewer from "@/components/organisms/VideoChatViewer";
 import { useSocketStore } from "@/stores/socketStore";
 
 type Props = {
-  mode: "empty" | "video" | "image";
+  mode: "empty" | "video" | "image" | "chat";
   imageUrl?: string;
 };
-
-const imgUrl =
-  "https://imgnews.pstatic.net/image/468/2025/05/24/0001149407_001_20250524094217320.jpg?type=w647";
-const imgUrl2 = "/test1.jpeg";
 
 export default function ViewerSwitcher({ mode, imageUrl }: Props) {
   //   const { image } = useSocketStore();

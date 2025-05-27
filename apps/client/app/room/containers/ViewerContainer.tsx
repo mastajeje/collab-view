@@ -7,6 +7,8 @@ import { sendImage } from "@/sockets/events/image";
 import { useSocketStore } from "@/stores/socketStore";
 import { joinRoom } from "@/sockets/events/room";
 import { ChatWindow } from "@/components/organisms/ChatWindow";
+import { ViewerButtons } from "../components/ViewerButtons";
+import { ChatButton } from "@/components/molecules/ChatButton";
 
 export default function CollaborationContainer({
   roomId,
@@ -23,9 +25,12 @@ export default function CollaborationContainer({
     isConnected,
     onEvents,
   } = useSocketStore();
-  const [mode, setMode] = useState<"empty" | "video" | "image">("empty");
+  const [mode, setMode] = useState<"empty" | "video" | "image" | "chat">(
+    "empty",
+  );
   const [imageUrl, setImageUrl] = useState<string>("");
 
+  const [isChatOpen, setIsChatOpen] = useState(false);
   useEffect(() => {
     connect();
   }, []);
@@ -42,7 +47,11 @@ export default function CollaborationContainer({
     }
   }, [isConnected]);
 
-  const handleModeChange = (mode: "empty" | "video" | "image") => {
+  const handleOpenChat = () => {
+    setIsChatOpen(!isChatOpen);
+  };
+
+  const handleModeChange = (mode: "empty" | "video" | "image" | "chat") => {
     setMode(mode);
   };
 
@@ -67,8 +76,10 @@ export default function CollaborationContainer({
         onModeChange={handleModeChange}
         onUpload={handleUpload}
       />
+      {!isChatOpen && <ChatButton openChat={handleOpenChat} />}
+
       <ViewerSwitcher mode={mode} imageUrl={imageUrl} />
-      <ChatWindow />
+      {isChatOpen && <ChatWindow handleChatOpen={handleOpenChat} />}
     </div>
   );
 }
