@@ -17,7 +17,8 @@ export const ChatInput = ({
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+    // 한글 입력 시 Enter 키 중복 이벤트 방지
+    if (event.key === "Enter" && !event.nativeEvent.isComposing) {
       onSendMessage();
     }
   };

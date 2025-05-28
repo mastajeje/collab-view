@@ -4,6 +4,7 @@ import { getDimensions } from "@/app/lib/getSize";
 import { useFabric } from "@/hooks/useFabric";
 import { sendImage } from "@/sockets/events/image";
 import { UploadButton } from "../atoms/UploadButton";
+import { Toolbar } from "../molecules/Toolbar";
 
 type Props = {
   imgUrl: string;
@@ -32,6 +33,7 @@ export default function ImageViewer({ imgUrl }: Props) {
     >
       {/* Image Viewer */}
       <canvas ref={canvasElRef} />
+      <Toolbar />
     </div>
   );
 }
