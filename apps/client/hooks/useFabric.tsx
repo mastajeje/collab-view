@@ -1,5 +1,6 @@
 "use client";
 
+import { log } from "comm-utils";
 import * as fabric from "fabric";
 import { useEffect, useRef } from "react";
 
@@ -19,7 +20,7 @@ export const useFabric = ({
 
   useEffect(() => {
     if (!canvasElRef.current || !width || !height) return;
-    console.log("useFabric", width, height);
+    log("useFabric", width, height);
     const canvas = new fabric.Canvas(canvasElRef.current, {
       width,
       height,

@@ -7,8 +7,9 @@ import { sendImage } from "@/sockets/events/image";
 import { useSocketStore } from "@/stores/socketStore";
 import { joinRoom } from "@/sockets/events/room";
 import { ChatWindow } from "@/components/organisms/ChatWindow";
-import { ViewerButtons } from "../components/ViewerButtons";
+// import { ViewerButtons } from "../components/ViewerButtons";
 import { ChatButton } from "@/components/molecules/ChatButton";
+import { MarkupLayer } from "@/components/organisms/MarkupLayer";
 
 export default function CollaborationContainer({
   roomId,
@@ -79,6 +80,7 @@ export default function CollaborationContainer({
       {!isChatOpen && <ChatButton openChat={handleOpenChat} />}
 
       <ViewerSwitcher mode={mode} imageUrl={imageUrl} />
+      <MarkupLayer />
       {isChatOpen && <ChatWindow handleChatOpen={handleOpenChat} />}
     </div>
   );
