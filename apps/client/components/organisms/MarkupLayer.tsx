@@ -1,29 +1,54 @@
 import { useMarkup } from "@/hooks/useMarkup";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Toolbar } from "../molecules/Toolbar";
+import { getDimensions } from "@/app/lib/getSize";
 
+import { Tool } from "@shared/types/comm-types";
 export const MarkupLayer = () => {
-  const { containerRef, setTool } = useMarkup({ roomId: "1" });
-  const [tool, updateTool] = useState<"select" | "pen" | "text" | "eraser">(
-    "pen",
-  );
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  //   const { containerRef, setTool } = useMarkup({
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { canvasElRef, setTool } = useMarkup({
+    roomId: "1",
+    width: dimensions.width,
+    height: dimensions.height,
+  });
+  const [currentTool, setCurrentTool] = useState<Tool>("default");
+
+  const currentToolRef = useRef<Tool>("default");
 
   useEffect(() => {
-    setTool(tool);
-  }, [tool]);
+    const { width, height } = getDimensions(containerRef);
+    setDimensions({ width, height });
+  }, []);
+
+  //   useEffect(() => {
+  //     if (dimensions.width === 0 || dimensions.height === 0) return;
+  //     setTool(tool);
+  //   }, [dimensions]);
+
+  const handleToolChange = (prevTool: Tool, tool: Tool) => {
+    if (prevTool === tool) return;
+
+    setTool(prevTool, tool);
+
+    // update current tool
+    setCurrentTool(tool);
+  };
 
   return (
     <div
-      onClick={(e) => {
-        console.log(e);
+      data-component="markup-layer"
+      //   onClick={(e) => {
+      //     console.log(e);
 
-        updateTool("eraser");
-      }}
+      //     updateTool("eraser");
+      //   }}
       ref={containerRef}
-      className="absolute z-20 h-full w-full border"
-    ></div>
-
-    // <div>
-    //   <div ref={containerRef} className="w-full border h-full"></div>
-    // </div>
+      className="absolute z-10 h-full w-full border"
+    >
+      <Toolbar handleToolChange={handleToolChange} prevTool={currentTool} />
+      <canvas ref={canvasElRef} />
+    </div>
   );
 };

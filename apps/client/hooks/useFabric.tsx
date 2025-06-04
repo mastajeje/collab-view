@@ -20,14 +20,14 @@ export const useFabric = ({
 
   useEffect(() => {
     if (!canvasElRef.current || !width || !height) return;
-    log("useFabric", width, height);
+    // log("useFabric", width, height);
     const canvas = new fabric.Canvas(canvasElRef.current, {
       width,
       height,
       selection: false,
     });
 
-    fabricCanvasRef.current = canvas;
+    // fabricCanvasRef.current = canvas;
 
     initImage(imgUrl, width, height, canvas);
 

@@ -1,10 +1,8 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { getDimensions } from "@/app/lib/getSize";
 import { useFabric } from "@/hooks/useFabric";
 import { sendImage } from "@/sockets/events/image";
-import { UploadButton } from "../atoms/UploadButton";
-import { Toolbar } from "../molecules/Toolbar";
 
 type Props = {
   imgUrl: string;
@@ -19,12 +17,18 @@ export default function ImageViewer({ imgUrl }: Props) {
     height: dimensions.height,
   });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!containerRef) return;
     const { width, height } = getDimensions(containerRef);
     setDimensions({ width, height });
     sendImage(imgUrl);
   }, []);
+  //   useLayoutEffect(() => {
+  //     if (!containerRef) return;
+  //     const { width, height } = getDimensions(containerRef);
+  //     setDimensions({ width, height });
+  //     sendImage(imgUrl);
+  //   }, []);
 
   return (
     <div
@@ -33,7 +37,6 @@ export default function ImageViewer({ imgUrl }: Props) {
     >
       {/* Image Viewer */}
       <canvas ref={canvasElRef} />
-      <Toolbar />
     </div>
   );
 }
