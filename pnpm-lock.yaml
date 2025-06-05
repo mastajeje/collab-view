@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      uuid:
+        specifier: ^11.1.0
+        version: 11.1.0
     devDependencies:
       concurrently:
         specifier: ^9.1.2
@@ -20,6 +24,9 @@ importers:
       '@shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@types/fabric':
+        specifier: ^5.3.10
+        version: 5.3.10
       comm-utils:
         specifier: workspace:*
         version: link:../../packages/comm-utils
@@ -709,6 +716,9 @@ packages:
 
   '@types/express@5.0.2':
     resolution: {integrity: sha512-BtjL3ZwbCQriyb0DGw+Rt12qAXPiBTPs815lsUvtt1Grk0vLRMZNMUZ741d5rjk+UQOxfDiBZ3dxpX00vSkK3g==}
+
+  '@types/fabric@5.3.10':
+    resolution: {integrity: sha512-fsJIuVkU+B2AnmQh+Ml2X0ax3NmRIqLvEXmZ+squX60HaF89TvdIP6tI6Uk5srXaauswTwPOOfWE7k2QboUZCg==}
 
   '@types/http-errors@2.0.4':
     resolution: {integrity: sha512-D0CFMMtydbJAegzOyHjtiKPLlvnm3iTZyZRSZoLq2mRhDdmLfIWOCYPfQJ4cu2erKghU++QvjcUjp/5h7hESpA==}
@@ -2825,6 +2835,10 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
+  uuid@11.1.0:
+    resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
+    hasBin: true
+
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
@@ -3440,6 +3454,8 @@ snapshots:
       '@types/body-parser': 1.19.5
       '@types/express-serve-static-core': 5.0.6
       '@types/serve-static': 1.15.7
+
+  '@types/fabric@5.3.10': {}
 
   '@types/http-errors@2.0.4': {}
 
@@ -5967,6 +5983,8 @@ snapshots:
 
   util-deprecate@1.0.2:
     optional: true
+
+  uuid@11.1.0: {}
 
   uuid@8.3.2:
     optional: true

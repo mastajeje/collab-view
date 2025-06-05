@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@shared": "workspace:*",
+    "@types/fabric": "^5.3.10",
     "comm-utils": "workspace:*",
     "fabric": "^6.6.5",
     "next": "15.3.2",

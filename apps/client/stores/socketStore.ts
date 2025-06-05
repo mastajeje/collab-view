@@ -1,9 +1,26 @@
 import { log } from "comm-utils";
 import { io, Socket } from "socket.io-client";
 import { create } from "zustand";
-import { CONNECT, RECEIVE_IMAGE } from "@shared/constants/socket-events";
-import { JOIN, USER_JOINED } from "@shared/dist";
+import {
+  CONNECT,
+  RECEIVE_IMAGE,
+  JOIN,
+  USER_JOINED,
+} from "@shared/constants/socket-events";
+import { Canvas } from "fabric/*";
+import * as fabric from "fabric";
+import {
+  INIT_MARKUP,
+  MARKUP_ADD,
+  MARKUP_DELETE,
+  MARKUP_EDIT,
+} from "@shared/dist";
+// import { } from "@shared/dist";
 const SOCKET_URL = "http://localhost:8080";
+
+interface CustomFabricObject extends fabric.Object {
+  id: string;
+}
 
 interface SocketStore {
   //   State
@@ -19,6 +36,7 @@ interface SocketStore {
   disconnect: () => void;
   onEvents: () => void;
   initImageListener: (callback: (image: string) => void) => void;
+  listenMarkupEvents: (canvas: Canvas) => void;
 }
 
 export const useSocketStore = create<SocketStore>((set, get) => ({
@@ -67,6 +85,46 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
 
     socket.on(RECEIVE_IMAGE, (image: string) => {
       callback(image);
+    });
+  },
+
+  listenMarkupEvents: (canvas: Canvas) => {
+    const socket = get().socket;
+    if (!socket) return;
+
+    socket.on(INIT_MARKUP, ({ json }) => {
+      canvas.loadFromJSON(json, () => canvas.renderAll());
+    });
+
+    socket.on(MARKUP_ADD, async (object) => {
+      log("markup add", object);
+      const objects = await fabric.util.enlivenObjects([object]);
+      objects.forEach((object) => {
+        canvas.add(object as fabric.Object);
+      });
+      canvas.renderAll();
+    });
+
+    socket.on(MARKUP_EDIT, ({ object }) => {
+      log("markup edit", object);
+      const target = canvas
+        .getObjects()
+        .find((obj) => (obj as CustomFabricObject).id === object.id);
+      if (target) {
+        target.set(object);
+        canvas.renderAll();
+      }
+    });
+
+    socket.on(MARKUP_DELETE, ({ objectId }) => {
+      log("markup delete", objectId);
+      const target = canvas
+        .getObjects()
+        .find((obj) => (obj as CustomFabricObject).id === objectId);
+      if (target) {
+        canvas.remove(target);
+        canvas.renderAll();
+      }
     });
   },
 

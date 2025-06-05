@@ -21,5 +21,8 @@
   "devDependencies": {
     "concurrently": "^9.1.2",
     "turbo": "^2.5.3"
+  },
+  "dependencies": {
+    "uuid": "^11.1.0"
   }
 }

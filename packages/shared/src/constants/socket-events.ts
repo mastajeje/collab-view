@@ -13,3 +13,9 @@ export const RECEIVE_IMAGE = 'receive-image';
 // chat
 export const SEND_MESSAGE = 'send-message';
 export const RECEIVE_MESSAGE = 'receive-message';
+
+// markup
+export const INIT_MARKUP = 'init-markup';
+export const MARKUP_ADD = 'markup-add';
+export const MARKUP_DELETE = 'markup-delete';
+export const MARKUP_EDIT = 'markup-edit';

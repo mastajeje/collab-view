@@ -10,6 +10,7 @@ import { ChatWindow } from "@/components/organisms/ChatWindow";
 // import { ViewerButtons } from "../components/ViewerButtons";
 import { ChatButton } from "@/components/molecules/ChatButton";
 import { MarkupLayer } from "@/components/organisms/MarkupLayer";
+import { RECEIVE_IMAGE } from "@shared/dist";
 
 export default function CollaborationContainer({
   roomId,
@@ -23,7 +24,7 @@ export default function CollaborationContainer({
     setRoomInfo,
     initImageListener,
     connect,
-    isConnected,
+    // isConnected,
     onEvents,
   } = useSocketStore();
   const [mode, setMode] = useState<"empty" | "video" | "image" | "chat">(
@@ -37,7 +38,7 @@ export default function CollaborationContainer({
   }, []);
 
   useEffect(() => {
-    if (isConnected && socket && username) {
+    if (socket && username) {
       joinRoom(socket, roomId, username);
       setRoomInfo(roomId, username);
       onEvents();
@@ -46,7 +47,11 @@ export default function CollaborationContainer({
         setImageUrl(image);
       });
     }
-  }, [isConnected]);
+
+    return () => {
+      socket?.off(RECEIVE_IMAGE);
+    };
+  }, [socket]);
 
   const handleOpenChat = () => {
     setIsChatOpen(!isChatOpen);
@@ -54,6 +59,7 @@ export default function CollaborationContainer({
 
   const handleModeChange = (mode: "empty" | "video" | "image" | "chat") => {
     setMode(mode);
+    console.log(mode);
   };
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,8 +68,11 @@ export default function CollaborationContainer({
     const reader = new FileReader();
     reader.onload = () => {
       const base64 = reader.result as string;
-      sendImage(base64);
-      setMode("image");
+      sendImage(base64, roomId);
+      setImageUrl(base64);
+      if (mode !== "image") {
+        setMode("image");
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -80,7 +89,7 @@ export default function CollaborationContainer({
       {!isChatOpen && <ChatButton openChat={handleOpenChat} />}
 
       <ViewerSwitcher mode={mode} imageUrl={imageUrl} />
-      <MarkupLayer />
+      <MarkupLayer roomId={roomId} />
       {isChatOpen && <ChatWindow handleChatOpen={handleOpenChat} />}
     </div>
   );

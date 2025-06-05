@@ -21,7 +21,7 @@ export default function ImageViewer({ imgUrl }: Props) {
     if (!containerRef) return;
     const { width, height } = getDimensions(containerRef);
     setDimensions({ width, height });
-    sendImage(imgUrl);
+    // sendImage(imgUrl);
   }, []);
   //   useLayoutEffect(() => {
   //     if (!containerRef) return;
@@ -33,6 +33,7 @@ export default function ImageViewer({ imgUrl }: Props) {
   return (
     <div
       ref={containerRef}
+      data-component="image-viewer"
       className="flex h-full w-full flex-col items-center justify-center bg-gray-100"
     >
       {/* Image Viewer */}

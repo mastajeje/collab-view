@@ -1,4 +1,14 @@
-import {JOIN, USER_JOINED} from '@shared/dist';
+import {
+  JOIN,
+  SEND_IMAGE,
+  SEND_MESSAGE,
+  RECEIVE_MESSAGE,
+  RECEIVE_IMAGE,
+  USER_JOINED,
+  DISCONNECT,
+  MARKUP_ADD,
+} from '@shared/dist';
+// import {JOIN, USER_JOINED, DISCONNECT} from '@shared/dist';
 import express from 'express';
 import http from 'http';
 import {Server} from 'socket.io';
@@ -30,15 +40,19 @@ io.on('connection', (socket) => {
   //     console.log('Event data:', JSON.stringify(data, null, 2));
   //   });
 
-  socket.on('send-image', ({image}) => {
-    socket.broadcast.emit('receive-image', image);
+  socket.on(SEND_IMAGE, ({image, roomId}) => {
+    socket.to(roomId).emit(RECEIVE_IMAGE, image);
   });
 
-  socket.on('send-message', ({message, sender}) => {
-    socket.broadcast.emit('receive-message', {message, sender});
+  socket.on(SEND_MESSAGE, ({message, sender}) => {
+    socket.broadcast.emit(RECEIVE_MESSAGE, {message, sender});
   });
 
-  socket.on('disconnect', () => {
+  socket.on(MARKUP_ADD, ({object, roomId}) => {
+    socket.to(roomId).emit(MARKUP_ADD, object);
+  });
+
+  socket.on(DISCONNECT, () => {
     console.log('Client disconnected:', socket.id);
   });
 });

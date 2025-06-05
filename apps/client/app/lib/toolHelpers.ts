@@ -1,6 +1,6 @@
 import { Tool } from "@shared/types/comm-types";
 import * as fabric from "fabric";
-
+// import { v4 as uuidv4 } from "uuid";
 interface ToolHelper {
   on: (canvas: fabric.Canvas) => void;
   off: (canvas: fabric.Canvas) => void;
@@ -26,6 +26,7 @@ export const toolHelpers: Record<Tool, ToolHelper> = {
 
       canvas.on("path:created", (e) => {
         const path = e.path;
+        // path.id = uuidv4();
         path.selectable = false;
         path.hoverCursor = "default";
       });
