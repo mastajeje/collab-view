@@ -22,8 +22,10 @@ export const useFabric = ({
     if (!canvasElRef.current || !width || !height) return;
     // log("useFabric", width, height);
     const canvas = new fabric.Canvas(canvasElRef.current, {
-      width,
-      height,
+      width: 800,
+      height: 600,
+      //   width,
+      //   height,
       selection: false,
     });
 

@@ -11,6 +11,8 @@ import { ChatWindow } from "@/components/organisms/ChatWindow";
 import { ChatButton } from "@/components/molecules/ChatButton";
 import { MarkupLayer } from "@/components/organisms/MarkupLayer";
 import { RECEIVE_IMAGE } from "@shared/dist";
+import { useScreenStore } from "@/stores/screenStore";
+import { getOptimalSize } from "@/app/lib/getSize";
 
 export default function CollaborationContainer({
   roomId,
@@ -27,6 +29,7 @@ export default function CollaborationContainer({
     // isConnected,
     onEvents,
   } = useSocketStore();
+  const { setScreenSize, screenSize } = useScreenStore();
   const [mode, setMode] = useState<"empty" | "video" | "image" | "chat">(
     "empty",
   );
@@ -34,9 +37,14 @@ export default function CollaborationContainer({
 
   const [isChatOpen, setIsChatOpen] = useState(false);
   useEffect(() => {
+    const optimalSize = getOptimalSize();
+    setScreenSize(optimalSize);
     connect();
   }, []);
 
+  useEffect(() => {
+    console.log(screenSize);
+  }, [screenSize]);
   useEffect(() => {
     if (socket && username) {
       joinRoom(socket, roomId, username);

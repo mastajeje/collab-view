@@ -5,14 +5,18 @@ import { getDimensions } from "@/app/lib/getSize";
 
 import { Tool } from "@shared/types/comm-types";
 import { useSocketStore } from "@/stores/socketStore";
+import { CANVAS_SIZES } from "@shared/constants/canvas";
+
 export const MarkupLayer = ({ roomId }: { roomId: string }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const containerRef = useRef<HTMLDivElement>(null);
   const { canvasElRef, markupCanvasRef, setTool } = useMarkup({
     roomId,
-    width: dimensions.width,
-    height: dimensions.height,
+    width: CANVAS_SIZES["sm"].width,
+    height: CANVAS_SIZES["sm"].height,
+    // width: dimensions.width,
+    // height: dimensions.height,
   });
   const [currentTool, setCurrentTool] = useState<Tool>("default");
   //   const [isCanvasReady, setIsCanvasReady] = useState(false);
@@ -46,7 +50,8 @@ export const MarkupLayer = ({ roomId }: { roomId: string }) => {
       //     updateTool("eraser");
       //   }}
       ref={containerRef}
-      className="absolute z-10 h-full w-full border"
+      className={`absolute z-10 border w-[${CANVAS_SIZES["sm"].width}px] h-[${CANVAS_SIZES["sm"].height}px] `}
+      //   className="absolute z-10 h-full w-full border "
     >
       <Toolbar handleToolChange={handleToolChange} prevTool={currentTool} />
       <canvas ref={canvasElRef} />

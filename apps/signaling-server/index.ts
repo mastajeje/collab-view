@@ -7,6 +7,8 @@ import {
   USER_JOINED,
   DISCONNECT,
   MARKUP_ADD,
+  MARKUP_EDIT,
+  MARKUP_DELETE,
 } from '@shared/dist';
 // import {JOIN, USER_JOINED, DISCONNECT} from '@shared/dist';
 import express from 'express';
@@ -50,6 +52,14 @@ io.on('connection', (socket) => {
 
   socket.on(MARKUP_ADD, ({object, roomId}) => {
     socket.to(roomId).emit(MARKUP_ADD, object);
+  });
+
+  socket.on(MARKUP_EDIT, ({object, roomId}) => {
+    socket.to(roomId).emit(MARKUP_EDIT, object);
+  });
+
+  socket.on(MARKUP_DELETE, ({objectId, roomId}) => {
+    socket.to(roomId).emit(MARKUP_DELETE, objectId);
   });
 
   socket.on(DISCONNECT, () => {

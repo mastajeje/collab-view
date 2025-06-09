@@ -1,3 +1,5 @@
+import { LARGE, MEDIUM, SMALL } from "@shared/constants/canvas";
+import { ScreenSize } from "@shared/dist";
 import { RefObject } from "react";
 
 export const getDimensions = <T extends HTMLElement>(
@@ -11,4 +13,16 @@ export const getDimensions = <T extends HTMLElement>(
     width: width,
     height: height,
   };
+};
+
+export const getOptimalSize = () => {
+  //   if (typeof window === "undefined") return MEDIUM;
+  const width = window.innerWidth;
+  if (width < 1000) {
+    return SMALL;
+  } else if (width < 1600) {
+    return MEDIUM;
+  } else {
+    return LARGE;
+  }
 };

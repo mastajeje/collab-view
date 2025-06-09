@@ -97,7 +97,6 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
     });
 
     socket.on(MARKUP_ADD, async (object) => {
-      log("markup add", object);
       const objects = await fabric.util.enlivenObjects([object]);
       objects.forEach((object) => {
         canvas.add(object as fabric.Object);
@@ -105,19 +104,19 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
       canvas.renderAll();
     });
 
-    socket.on(MARKUP_EDIT, ({ object }) => {
-      log("markup edit", object);
+    socket.on(MARKUP_EDIT, (object) => {
       const target = canvas
         .getObjects()
         .find((obj) => (obj as CustomFabricObject).id === object.id);
       if (target) {
-        target.set(object);
+        const { type, ...updatableProps } = object;
+        target.set(updatableProps);
+        // target.set(object);
         canvas.renderAll();
       }
     });
 
-    socket.on(MARKUP_DELETE, ({ objectId }) => {
-      log("markup delete", objectId);
+    socket.on(MARKUP_DELETE, (objectId) => {
       const target = canvas
         .getObjects()
         .find((obj) => (obj as CustomFabricObject).id === objectId);

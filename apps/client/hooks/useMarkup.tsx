@@ -45,12 +45,14 @@ export const useMarkup = ({ roomId, width, height }: UseMarkupProps) => {
 
     markupCanvas.on("object:modified", (e) => {
       if (e.target) {
+        console.log("modified", e.target);
         emitMarkupEdit(roomId, e.target.toObject(["id"]) as CustomFabricObject);
       }
     });
 
     markupCanvas.on("object:removed", (e) => {
       if (e.target) {
+        console.log("removed", e.target);
         emitMarkupDelete(roomId, (e.target as CustomFabricObject).id);
       }
     });
