@@ -22,14 +22,16 @@ export const useFabric = ({
     if (!canvasElRef.current || !width || !height) return;
     // log("useFabric", width, height);
     const canvas = new fabric.Canvas(canvasElRef.current, {
-      width: 800,
-      height: 600,
+      width,
+      height,
       //   width,
       //   height,
-      selection: false,
+      backgroundColor: "blue",
+      selection: true,
+      evented: true,
     });
 
-    // fabricCanvasRef.current = canvas;
+    fabricCanvasRef.current = canvas;
 
     initImage(imgUrl, width, height, canvas);
 
@@ -52,7 +54,7 @@ const initImage = async (
 ) => {
   const img = await fabric.FabricImage.fromURL(url, { crossOrigin: null });
 
-  img.selectable = false;
+  img.selectable = true;
 
   // Scale to fit inside the canvas
   img.scaleToWidth(width);
@@ -68,5 +70,6 @@ const initImage = async (
   //   img.centeredScaling = true;
   //   img.center();
   canvas.add(img);
+  canvas.sendObjectToBack(img);
   canvas.renderAll();
 };

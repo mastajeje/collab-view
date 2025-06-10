@@ -20,6 +20,10 @@ const SOCKET_URL = "http://localhost:8080";
 
 interface CustomFabricObject extends fabric.Object {
   id: string;
+  data: {
+    leftRatio: number;
+    topRatio: number;
+  };
 }
 
 interface SocketStore {

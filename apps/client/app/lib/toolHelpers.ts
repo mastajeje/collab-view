@@ -39,11 +39,14 @@ export const toolHelpers: Record<Tool, ToolHelper> = {
   text: {
     handler: null,
     on: (canvas) => {
+      disableSelection(canvas);
+
       toolHelpers.text.handler = (e: any) => handleTextInsert(e, canvas);
       canvas.on("mouse:up", toolHelpers.text.handler);
     },
     off: (canvas) => {
       if (toolHelpers.text.handler) {
+        enableSelection(canvas);
         canvas.off("mouse:up", toolHelpers.text.handler);
       }
     },
@@ -89,7 +92,7 @@ const removeObject = (pointer: fabric.Point, canvas: fabric.Canvas) => {
 
   for (let i = objects.length - 1; i >= 0; i--) {
     const obj = objects[i];
-
+    if (obj.isType("image")) return;
     if (obj.containsPoint(pointer)) {
       canvas.remove(obj);
       canvas.renderAll();
@@ -110,4 +113,18 @@ const handleTextInsert = (e: any, canvas: fabric.Canvas) => {
   });
   canvas.add(text);
   canvas.setActiveObject(text);
+};
+
+const disableSelection = (canvas: fabric.Canvas) => {
+  canvas.getObjects().forEach((obj) => {
+    obj.selectable = false;
+    obj.evented = false;
+  });
+};
+
+const enableSelection = (canvas: fabric.Canvas) => {
+  canvas.getObjects().forEach((obj) => {
+    obj.selectable = true;
+    obj.evented = true;
+  });
 };

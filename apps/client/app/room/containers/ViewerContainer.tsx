@@ -88,7 +88,7 @@ export default function CollaborationContainer({
   return (
     <div
       aria-label="Viewer Container"
-      className="relative flex h-full w-full flex-col items-center justify-center bg-gray-100"
+      className="relative flex h-full min-h-0 w-full flex-1 flex-col items-center justify-center overflow-auto bg-gray-100"
     >
       <ViewModeButtons
         onModeChange={handleModeChange}
@@ -97,7 +97,7 @@ export default function CollaborationContainer({
       {!isChatOpen && <ChatButton openChat={handleOpenChat} />}
 
       <ViewerSwitcher mode={mode} imageUrl={imageUrl} />
-      <MarkupLayer roomId={roomId} />
+      {/* <MarkupLayer roomId={roomId} /> */}
       {isChatOpen && <ChatWindow handleChatOpen={handleOpenChat} />}
     </div>
   );

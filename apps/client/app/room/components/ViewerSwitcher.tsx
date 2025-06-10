@@ -2,6 +2,7 @@ import ViewModeButtons from "@/components/molecules/ViewModeButtons";
 import EmptyScreen from "@/components/organisms/EmptyScreen";
 import ImageViewer from "@/components/organisms/ImageViewer";
 import VideoChatViewer from "@/components/organisms/VideoChatViewer";
+import { useScreenStore } from "@/stores/screenStore";
 import { useSocketStore } from "@/stores/socketStore";
 
 type Props = {
@@ -11,7 +12,7 @@ type Props = {
 
 export default function ViewerSwitcher({ mode, imageUrl }: Props) {
   //   const { image } = useSocketStore();
-
+  const { screenSize } = useScreenStore();
   return (
     <div
       aria-label="viewer-switcher"
