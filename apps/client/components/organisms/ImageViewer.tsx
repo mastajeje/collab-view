@@ -1,14 +1,14 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { getDimensions } from "@/app/lib/getSize";
 import { useFabric } from "@/hooks/useFabric";
-import { sendImage } from "@/sockets/events/image";
 import { CANVAS_SIZES } from "@shared/constants/canvas";
 import { useScreenStore } from "@/stores/screenStore";
 import { useResizeCanvas } from "@/hooks/useResizeCanvas";
 import { useMarkup } from "@/hooks/useMarkup";
 import { Toolbar } from "../molecules/Toolbar";
 import { Tool } from "@shared/dist";
+import { useParams } from "next/navigation";
+import { useSocketStore } from "@/stores/socketStore";
 
 type Props = {
   imgUrl: string;
@@ -17,29 +17,31 @@ type Props = {
 export default function ImageViewer({ imgUrl }: Props) {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [currentTool, setCurrentTool] = useState<Tool>("default");
-
+  const { roomId } = useParams<{ roomId: string }>();
   const { screenSize } = useScreenStore();
+  const { listenMarkupEvents } = useSocketStore();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { canvasElRef, fabricCanvasRef } = useFabric({
+  const { canvasElRef, fabricCanvasRef, isCanvasReady } = useFabric({
     imgUrl,
     width: dimensions.width,
     height: dimensions.height,
-    // width: dimensions.width,
-    // height: dimensions.height,
   });
-  const { resizeFabric } = useResizeCanvas({ canvasRef: fabricCanvasRef });
+  const { resizeFabric } = useResizeCanvas({
+    canvasRef: fabricCanvasRef,
+  });
   const { setTool } = useMarkup({
-    roomId: "1",
+    isCanvasReady,
+    roomId,
     fabricCanvasRef,
-    width: dimensions.width,
-    height: dimensions.height,
   });
-  //   useEffect(() => {
-  //     if (!containerRef) return;
-  //     // const { width, height } = getDimensions(containerRef);
-  //     // setDimensions({ width, height });
-  //     // sendImage(imgUrl);
-  //   }, []);
+
+  useEffect(() => {
+    const canvas = fabricCanvasRef.current;
+    console.log("fabricCanvasRef.current", canvas);
+    if (canvas && isCanvasReady) {
+      listenMarkupEvents(canvas);
+    }
+  }, [isCanvasReady]);
 
   useEffect(() => {
     if (!containerRef) return;

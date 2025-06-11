@@ -15,16 +15,19 @@ import {
   MARKUP_DELETE,
   MARKUP_EDIT,
 } from "@shared/dist";
+import { CustomFabricObject } from "@/types/types";
 // import { } from "@shared/dist";
 const SOCKET_URL = "http://localhost:8080";
 
-interface CustomFabricObject extends fabric.Object {
-  id: string;
-  data: {
-    leftRatio: number;
-    topRatio: number;
-  };
-}
+// interface CustomFabricObject extends fabric.Object {
+//   id: string;
+//   data: {
+//     leftRatio: number;
+//     topRatio: number;
+//     originCanvasWidth: number;
+//     originCanvasHeight: number;
+//   };
+// }
 
 interface SocketStore {
   //   State
@@ -100,10 +103,31 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
       canvas.loadFromJSON(json, () => canvas.renderAll());
     });
 
-    socket.on(MARKUP_ADD, async (object) => {
-      const objects = await fabric.util.enlivenObjects([object]);
-      objects.forEach((object) => {
-        canvas.add(object as fabric.Object);
+    socket.on(MARKUP_ADD, async (objects) => {
+      const width = canvas.getWidth();
+      const height = canvas.getHeight();
+
+      const enlivendObjects = await fabric.util.enlivenObjects([objects]);
+
+      enlivendObjects.forEach((object) => {
+        const customObject = object as CustomFabricObject;
+        const scaleX = width / customObject.data.originCanvasWidth;
+        const scaleY = height / customObject.data.originCanvasHeight;
+        console.log("objects", object);
+        const leftRatio = customObject.data.leftRatio;
+        const topRatio = customObject.data.topRatio;
+        //   if (!leftRatio || !topRatio) return;
+        customObject.left = leftRatio * width;
+        customObject.top = topRatio * height;
+        //   obj.setCoords();
+        customObject.set({
+          leftRatio: leftRatio * width,
+          topRatio: topRatio * height,
+          scaleX: customObject.scaleX * scaleX,
+          scaleY: customObject.scaleY * scaleY,
+        });
+
+        canvas.add(customObject);
       });
       canvas.renderAll();
     });

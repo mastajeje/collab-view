@@ -51,6 +51,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on(MARKUP_ADD, ({object, roomId}) => {
+    console.log('MARKUP_ADD', roomId);
     socket.to(roomId).emit(MARKUP_ADD, object);
   });
 
