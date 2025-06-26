@@ -46,7 +46,7 @@ export const toolHelpers: Record<Tool, ToolHelper> = {
     },
     off: (canvas) => {
       if (toolHelpers.text.handler) {
-        enableSelection(canvas);
+        // enableSelection(canvas);
         canvas.off("mouse:up", toolHelpers.text.handler);
       }
     },
