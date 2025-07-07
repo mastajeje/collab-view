@@ -96,7 +96,7 @@ export default function CollaborationContainer({
       />
       {!isChatOpen && <ChatButton openChat={handleOpenChat} />}
 
-      <ViewerSwitcher mode={mode} imageUrl={imageUrl} />
+      <ViewerSwitcher mode={mode} imageUrl={imageUrl} roomId={roomId} />
       {/* <MarkupLayer roomId={roomId} /> */}
       {isChatOpen && <ChatWindow handleChatOpen={handleOpenChat} />}
     </div>

@@ -1,5 +1,5 @@
 import { useSocketStore } from "@/stores/socketStore";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export const useWebRTC = (roomId: string) => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
@@ -41,5 +41,47 @@ export const useWebRTC = (roomId: string) => {
     const offer = await peerRef.current.createOffer();
     await peerRef.current.setLocalDescription(offer);
     socket.emit("offer", { roomId, offer });
+  };
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("offer", async ({ offer }) => {
+      const peer = new RTCPeerConnection();
+      peerRef.current = peer;
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      stream.getTracks().forEach((track) => peer.addTrack(track, stream));
+      if (localVideoRef.current) localVideoRef.current.srcObject = stream;
+
+      peer.ontrack = (event) => {
+        if (remoteVideoRef.current)
+          remoteVideoRef.current.srcObject = event.streams[0];
+      };
+
+      await peer.setRemoteDescription(new RTCSessionDescription(offer));
+      const answer = await peer.createAnswer();
+      await peer.setLocalDescription(answer);
+      socket.emit("answer", { roomId, answer });
+    });
+
+    socket.on("answer", async ({ answer }) => {
+      if (peerRef.current?.signalingState === "stable") return;
+      await peerRef.current?.setRemoteDescription(
+        new RTCSessionDescription(answer),
+      );
+    });
+
+    socket.on("ice-candidate", ({ candidate }) => {
+      peerRef.current?.addIceCandidate(new RTCIceCandidate(candidate));
+    });
+  }, [socket]);
+
+  return {
+    startCall,
+    localVideoRef,
+    remoteVideoRef,
   };
 };
