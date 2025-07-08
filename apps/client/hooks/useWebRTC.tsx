@@ -7,6 +7,7 @@ export const useWebRTC = (roomId: string) => {
   const peerRef = useRef<RTCPeerConnection | null>(null);
   // const socket =
   const socket = useSocketStore.getState().socket;
+  const pendingCandidates: RTCIceCandidate[] = [];
 
   const startCall = async () => {
     if (!socket) return;
@@ -45,7 +46,8 @@ export const useWebRTC = (roomId: string) => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.on("offer", async ({ offer }) => {
+
+    const handleOffer = async ({ offer }) => {
       const peer = new RTCPeerConnection();
       peerRef.current = peer;
 
@@ -62,21 +64,46 @@ export const useWebRTC = (roomId: string) => {
       };
 
       await peer.setRemoteDescription(new RTCSessionDescription(offer));
+      // 대기중인 candidate 추가
+      pendingCandidates.forEach((candidate) => peer.addIceCandidate(candidate));
+      pendingCandidates.length = 0;
       const answer = await peer.createAnswer();
       await peer.setLocalDescription(answer);
       socket.emit("answer", { roomId, answer });
-    });
+    };
 
-    socket.on("answer", async ({ answer }) => {
-      if (peerRef.current?.signalingState === "stable") return;
-      await peerRef.current?.setRemoteDescription(
-        new RTCSessionDescription(answer),
-      );
-    });
+    const handleAnswer = async ({ answer }) => {
+      try {
+        if (peerRef.current && peerRef.current.signalingState !== "stable") {
+          await peerRef.current.setRemoteDescription(
+            new RTCSessionDescription(answer),
+          );
+        }
+      } catch (e) {
+        console.warn("Failed to set remote answer SDP:", e);
+      }
+    };
 
-    socket.on("ice-candidate", ({ candidate }) => {
-      peerRef.current?.addIceCandidate(new RTCIceCandidate(candidate));
-    });
+    const handleIceCandidate = ({ candidate }) => {
+      const iceCandidate = new RTCIceCandidate(candidate);
+      if (peerRef.current?.remoteDescription) {
+        peerRef.current.addIceCandidate(iceCandidate);
+      } else {
+        pendingCandidates.push(iceCandidate);
+      }
+    };
+
+    socket.on("offer", handleOffer);
+
+    socket.on("answer", handleAnswer);
+
+    socket.on("ice-candidate", handleIceCandidate);
+
+    return () => {
+      socket.off("offer", handleOffer);
+      socket.off("answer", handleAnswer);
+      socket.off("ice-candidate", handleIceCandidate);
+    };
   }, [socket]);
 
   return {

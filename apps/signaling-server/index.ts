@@ -73,6 +73,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('answer', ({roomId, answer}) => {
+    console.log('answer', roomId);
     socket.to(roomId).emit('answer', {answer});
   });
 
