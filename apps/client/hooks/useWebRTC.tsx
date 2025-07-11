@@ -47,7 +47,11 @@ export const useWebRTC = (roomId: string) => {
   useEffect(() => {
     if (!socket) return;
 
-    const handleOffer = async ({ offer }) => {
+    const handleOffer = async ({
+      offer,
+    }: {
+      offer: RTCSessionDescriptionInit;
+    }) => {
       const peer = new RTCPeerConnection();
       peerRef.current = peer;
 
@@ -72,7 +76,11 @@ export const useWebRTC = (roomId: string) => {
       socket.emit("answer", { roomId, answer });
     };
 
-    const handleAnswer = async ({ answer }) => {
+    const handleAnswer = async ({
+      answer,
+    }: {
+      answer: RTCSessionDescriptionInit;
+    }) => {
       try {
         if (peerRef.current && peerRef.current.signalingState !== "stable") {
           await peerRef.current.setRemoteDescription(
@@ -84,7 +92,11 @@ export const useWebRTC = (roomId: string) => {
       }
     };
 
-    const handleIceCandidate = ({ candidate }) => {
+    const handleIceCandidate = ({
+      candidate,
+    }: {
+      candidate: RTCIceCandidateInit;
+    }) => {
       const iceCandidate = new RTCIceCandidate(candidate);
       if (peerRef.current?.remoteDescription) {
         peerRef.current.addIceCandidate(iceCandidate);
