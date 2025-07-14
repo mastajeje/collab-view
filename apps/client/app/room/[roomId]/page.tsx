@@ -11,30 +11,14 @@ type Props = {
 };
 
 export default function RoomPage({ mode }: Props) {
-  const { socket, connect, isConnected, onEvents } = useSocketStore();
+  const { registerCallListener } = useSocketStore();
   const searchParams = useSearchParams();
   const { roomId } = useParams<{ roomId: string }>();
   const username = searchParams.get("username");
 
-  //   useEffect(() => {
-  //     connect();
-  //     // };
-  //   }, []);
-
-  //   useEffect(() => {
-  //     if (isConnected && socket) {
-  //       onEvents();
-  //       socket.emit(JOIN, { roomId: "123", userName: "test" });
-  //     }
-  //   }, [isConnected]);
-
-  //   const handleTest = () => {
-  //     if (socket) {
-  //       socket.emit("test", { text: "test text" });
-  //     } else {
-  //       console.log("Socket is null");
-  //     }
-  //   };
+  useEffect(() => {
+    registerCallListener();
+  }, []);
 
   return (
     <main className="flex h-full w-full flex-col">

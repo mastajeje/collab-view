@@ -16,6 +16,7 @@ import {
   MARKUP_EDIT,
 } from "@shared/dist";
 import { CustomFabricObject } from "@/types/types";
+import { useCallStore } from "./useCallStore";
 // import { } from "@shared/dist";
 const SOCKET_URL = "http://localhost:8080";
 
@@ -28,7 +29,8 @@ const SOCKET_URL = "http://localhost:8080";
 //     originCanvasHeight: number;
 //   };
 // }
-
+const CALL_REQUEST = "call:request";
+const CALL_CANCEL = "call:cancel";
 interface SocketStore {
   //   State
   socket: Socket | null;
@@ -44,6 +46,7 @@ interface SocketStore {
   onEvents: () => void;
   initImageListener: (callback: (image: string) => void) => void;
   listenMarkupEvents: (canvas: Canvas) => void;
+  registerCallListener: () => void;
 }
 
 export const useSocketStore = create<SocketStore>((set, get) => ({
@@ -152,6 +155,21 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
         canvas.remove(target);
         canvas.renderAll();
       }
+    });
+  },
+
+  registerCallListener: () => {
+    const socket = get().socket;
+    if (!socket) return;
+
+    socket.on(CALL_REQUEST, (from: string) => {
+      const { setIncomingCallFrom } = useCallStore.getState();
+      setIncomingCallFrom("jj");
+    });
+
+    socket.on(CALL_CANCEL, () => {
+      const { setIncomingCallFrom } = useCallStore.getState();
+      setIncomingCallFrom(null);
     });
   },
 

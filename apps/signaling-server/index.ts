@@ -80,6 +80,11 @@ io.on('connection', (socket) => {
   socket.on('ice-candidate', ({roomId, candidate}) => {
     socket.to(roomId).emit('ice-candidate', {candidate});
   });
+
+  // Call socket
+  socket.on('call:request', ({roomId}) => {
+    socket.to(roomId).emit('call:request', {from: 'jj'});
+  });
 });
 
 server.listen(8080, () => {
