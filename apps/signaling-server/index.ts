@@ -9,6 +9,7 @@ import {
   MARKUP_ADD,
   MARKUP_EDIT,
   MARKUP_DELETE,
+  CALL_ACCEPT,
 } from '@shared/dist';
 // import {JOIN, USER_JOINED, DISCONNECT} from '@shared/dist';
 import express from 'express';
@@ -84,6 +85,10 @@ io.on('connection', (socket) => {
   // Call socket
   socket.on('call:request', ({roomId}) => {
     socket.to(roomId).emit('call:request', {from: 'jj'});
+  });
+
+  socket.on(CALL_ACCEPT, ({roomId}) => {
+    socket.to(roomId).emit(CALL_ACCEPT);
   });
 });
 

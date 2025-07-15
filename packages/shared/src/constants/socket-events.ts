@@ -19,3 +19,15 @@ export const INIT_MARKUP = 'init-markup';
 export const MARKUP_ADD = 'markup-add';
 export const MARKUP_DELETE = 'markup-delete';
 export const MARKUP_EDIT = 'markup-edit';
+
+// video call
+export const CALL_REQUEST = 'call:request';
+export const CALL_CANCEL = 'call:cancel';
+export const CALL_ACCEPT = 'call:accept';
+export const CALL_REJECT = 'call:reject';
+export const CALL_END = 'call:end';
+
+// webRTC
+export const ICE_CANDIDATE = 'ice-candidate';
+export const OFFER = 'offer';
+export const ANSWER = 'answer';

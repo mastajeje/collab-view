@@ -10,6 +10,9 @@ import {
 import { Canvas } from "fabric/*";
 import * as fabric from "fabric";
 import {
+  CALL_ACCEPT,
+  CALL_CANCEL,
+  CALL_REQUEST,
   INIT_MARKUP,
   MARKUP_ADD,
   MARKUP_DELETE,
@@ -29,8 +32,8 @@ const SOCKET_URL = "http://localhost:8080";
 //     originCanvasHeight: number;
 //   };
 // }
-const CALL_REQUEST = "call:request";
-const CALL_CANCEL = "call:cancel";
+// const CALL_REQUEST = "call:request";
+// const CALL_CANCEL = "call:cancel";
 interface SocketStore {
   //   State
   socket: Socket | null;
@@ -164,7 +167,12 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
 
     socket.on(CALL_REQUEST, (from: string) => {
       const { setIncomingCallFrom } = useCallStore.getState();
-      setIncomingCallFrom("jj");
+      setIncomingCallFrom(from);
+    });
+
+    socket.on(CALL_ACCEPT, () => {
+      const { setIsAnswered } = useCallStore.getState();
+      setIsAnswered(true);
     });
 
     socket.on(CALL_CANCEL, () => {

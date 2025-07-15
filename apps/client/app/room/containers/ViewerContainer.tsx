@@ -29,10 +29,11 @@ export default function CollaborationContainer({
     // isConnected,
     onEvents,
   } = useSocketStore();
-  const { setScreenSize, screenSize } = useScreenStore();
-  const [mode, setMode] = useState<"empty" | "video" | "image" | "chat">(
-    "empty",
-  );
+  const { setScreenSize, screenSize, viewerMode, setViewerMode } =
+    useScreenStore();
+  //   const [mode, setMode] = useState<"empty" | "video" | "image" | "chat">(
+  //     "empty",
+  //   );
   const [imageUrl, setImageUrl] = useState<string>("");
 
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -51,7 +52,7 @@ export default function CollaborationContainer({
       setRoomInfo(roomId, username);
       onEvents();
       initImageListener((image) => {
-        setMode("image");
+        setViewerMode("image");
         setImageUrl(image);
       });
     }
@@ -66,7 +67,7 @@ export default function CollaborationContainer({
   };
 
   const handleModeChange = (mode: "empty" | "video" | "image" | "chat") => {
-    setMode(mode);
+    setViewerMode(mode);
     console.log(mode);
   };
 
@@ -78,8 +79,8 @@ export default function CollaborationContainer({
       const base64 = reader.result as string;
       sendImage(base64, roomId);
       setImageUrl(base64);
-      if (mode !== "image") {
-        setMode("image");
+      if (viewerMode !== "image") {
+        setViewerMode("image");
       }
     };
     reader.readAsDataURL(file);
@@ -96,7 +97,7 @@ export default function CollaborationContainer({
       />
       {!isChatOpen && <ChatButton openChat={handleOpenChat} />}
 
-      <ViewerSwitcher mode={mode} imageUrl={imageUrl} roomId={roomId} />
+      <ViewerSwitcher imageUrl={imageUrl} roomId={roomId} />
       {/* <MarkupLayer roomId={roomId} /> */}
       {isChatOpen && <ChatWindow handleChatOpen={handleOpenChat} />}
     </div>

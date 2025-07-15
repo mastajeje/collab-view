@@ -1,18 +1,27 @@
 import { useWebRTC } from "@/hooks/useWebRTC";
 import { useSocketStore } from "@/stores/socketStore";
 import { useCallStore } from "@/stores/useCallStore";
+import { useEffect } from "react";
 
 export default function VideoCallViewer({ roomId }: { roomId: string }) {
   const { localVideoRef, remoteVideoRef, startCall } = useWebRTC(roomId);
-  const { setIsCalling, setIncomingCallFrom } = useCallStore();
-  const { socket } = useSocketStore();
+  const { isAnswered, setIsAnswered } = useCallStore();
+
+  const { socket, username } = useSocketStore();
   const handleStartCall = () => {
     if (!socket) return;
-    setIsCalling(true);
-    console.log("call:request", roomId);
-    socket.emit("call:request", { roomId });
+    // setIsCalling(true);
+    socket.emit("call:request", { roomId, from: username });
     // startCall();
   };
+
+  useEffect(() => {
+    if (isAnswered) {
+      startCall();
+      //   setIsCalling(false);
+      setIsAnswered(false);
+    }
+  }, [isAnswered]);
 
   return (
     <div className="flex flex-col gap-2">
