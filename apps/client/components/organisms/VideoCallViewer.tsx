@@ -1,6 +1,7 @@
 import { useWebRTC } from "@/hooks/useWebRTC";
 import { useSocketStore } from "@/stores/socketStore";
 import { useCallStore } from "@/stores/useCallStore";
+import { CALL_REQUEST } from "@shared/dist";
 import { useEffect } from "react";
 
 export default function VideoCallViewer({ roomId }: { roomId: string }) {
@@ -11,7 +12,7 @@ export default function VideoCallViewer({ roomId }: { roomId: string }) {
   const handleStartCall = () => {
     if (!socket) return;
     // setIsCalling(true);
-    socket.emit("call:request", { roomId, from: username });
+    socket.emit(CALL_REQUEST, { roomId, from: username });
     // startCall();
   };
 

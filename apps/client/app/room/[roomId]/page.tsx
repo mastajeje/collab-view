@@ -6,6 +6,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import TopBar from "../components/TopBar";
 import ViewerContainer from "../containers/ViewerContainer";
 import { useSocketStore } from "@/stores/socketStore";
+import { FlashMessage } from "@/components/molecules/FlashMessage";
 type Props = {
   mode: "empty" | "video" | "image";
 };
@@ -25,6 +26,7 @@ export default function RoomPage({ mode }: Props) {
       <TopBar roomId={roomId} />
       {/* {mode === "empty" && <EmptyScreen onClick={handleTest} />} */}
       <ViewerContainer roomId={roomId} username={username} />
+      <FlashMessage message="JJ Rejected your call" duration={5000} />
     </main>
   );
 }

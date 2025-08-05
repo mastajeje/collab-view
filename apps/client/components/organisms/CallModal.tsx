@@ -2,7 +2,7 @@
 import { useCallStore } from "@/stores/useCallStore";
 import { CallModalText } from "../atoms/CallModalText";
 import { CallButton } from "../atoms/CallButton";
-import { CALL_ACCEPT } from "@shared/dist";
+import { CALL_ACCEPT, CALL_REJECT } from "@shared/dist";
 import { useSocketStore } from "@/stores/socketStore";
 import { useScreenStore } from "@/stores/screenStore";
 
@@ -17,6 +17,11 @@ export const CallModal = () => {
     socket.emit(CALL_ACCEPT, { roomId });
     setViewerMode("video");
     setIncomingCallFrom(null);
+  };
+
+  const handleReject = () => {
+    if (!socket) return;
+    socket.emit(CALL_REJECT);
   };
 
   return (

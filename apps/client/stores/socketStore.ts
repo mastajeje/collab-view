@@ -12,6 +12,7 @@ import * as fabric from "fabric";
 import {
   CALL_ACCEPT,
   CALL_CANCEL,
+  CALL_REJECT,
   CALL_REQUEST,
   INIT_MARKUP,
   MARKUP_ADD,
@@ -165,14 +166,19 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
     const socket = get().socket;
     if (!socket) return;
 
-    socket.on(CALL_REQUEST, (from: string) => {
+    socket.on(CALL_REQUEST, (data: { from: string }) => {
       const { setIncomingCallFrom } = useCallStore.getState();
-      setIncomingCallFrom(from);
+      setIncomingCallFrom(data.from);
     });
 
     socket.on(CALL_ACCEPT, () => {
       const { setIsAnswered } = useCallStore.getState();
       setIsAnswered(true);
+    });
+
+    socket.on(CALL_REJECT, () => {
+      const { setIncomingCallFrom } = useCallStore.getState();
+      setIncomingCallFrom(null);
     });
 
     socket.on(CALL_CANCEL, () => {
